@@ -1,7 +1,9 @@
+import TodoList from "./components/TodoList";
+
 const App = () => {
   return (
     <div className="todo-app">
-      <h1>Hello world</h1>
+      <TodoList />
     </div>
   );
 }
