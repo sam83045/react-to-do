@@ -8,7 +8,7 @@ const todoReducer = (state = initialState, actions) => {
         case CONSTANTS.LOAD_TODO_LIST: {
             const updatedState = actions.payload;
             return [...updatedState];
-        };
+        }
         default: {
             return state;
         }
