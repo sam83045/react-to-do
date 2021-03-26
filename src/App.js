@@ -1,10 +1,10 @@
 import React from "react";
-import TodoList from "./components/TodoList";
+import { TodoPage } from "./pages";
 
 const App = () => {
   return (
     <div className="todo-app">
-      <TodoList />
+      <TodoPage />
     </div>
   );
 }
