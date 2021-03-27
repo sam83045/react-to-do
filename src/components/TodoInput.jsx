@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { useFormik } from "formik";
 import { addTodo } from "../redux/actions";
+import { v4 as uuid } from "uuid";
 
 const TodoInput = ({ addTodo }) => {
   const formik = useFormik({
@@ -10,7 +11,7 @@ const TodoInput = ({ addTodo }) => {
       todo: "",
     },
     onSubmit: (values) => {
-      addTodo({ task: values.todo });
+      addTodo({ task: values.todo, id: uuid() });
       formik.handleReset();
     },
   });

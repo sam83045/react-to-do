@@ -22,4 +22,22 @@ export const addTodo = (item) => {
             payload: item
         })
     }
-}
+};
+
+export const removeMultipleTodo = (items) => {
+    return async dispatch => {
+        return dispatch({
+            type: CONSTANTS.REMOVE_MULTIPLE_TODO,
+            payload: items
+        })
+    }
+};
+
+export const updateTodo = item => {
+    return async dispatch => {
+        return dispatch({
+            type: CONSTANTS.UPDATE_TODO,
+            payload: item
+        })
+    }
+};
