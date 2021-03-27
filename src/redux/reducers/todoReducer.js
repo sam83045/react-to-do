@@ -9,6 +9,10 @@ const todoReducer = (state = initialState, actions) => {
             const updatedState = actions.payload;
             return [...updatedState];
         }
+        case CONSTANTS.ADD_TODO: {
+            const updatedState = [actions.payload, ...state];
+            return [...updatedState];
+        }
         default: {
             return state;
         }
