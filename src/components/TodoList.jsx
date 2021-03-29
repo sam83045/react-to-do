@@ -4,7 +4,10 @@ import { loadTodoList, deleteMultipleTodo } from "../redux/actions";
 import { todoListSelector } from "../redux/selectors/todoSelectors";
 import PropTypes from "prop-types";
 import {
+  Card,
+  CardHeader,
   Checkbox,
+  Divider,
   IconButton,
   List,
   ListItem,
@@ -17,21 +20,23 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import { TodoInput } from ".";
 
-const useStyles = makeStyles(() => ({
-  root: {},
+const useStyles = makeStyles((theme) => ({
+  cardHeader: {
+    padding: theme.spacing(1, 2),
+  },
 }));
 
 const TodoList = ({ loadTodoList, todoList, deleteMultipleTodo }) => {
   const classes = useStyles();
-  const [checked, setChecked] = useState([]);
+  const [checkedTodo, setCheckedTodo] = useState([]);
   const [editTodoId, setEditTodoId] = useState("");
   useEffect(() => {
     loadTodoList();
   }, []);
 
   const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+    const currentIndex = checkedTodo.indexOf(value);
+    const newChecked = [...checkedTodo];
 
     if (currentIndex === -1) {
       newChecked.push(value);
@@ -39,13 +44,41 @@ const TodoList = ({ loadTodoList, todoList, deleteMultipleTodo }) => {
       newChecked.splice(currentIndex, 1);
     }
 
-    setChecked(newChecked);
+    setCheckedTodo(newChecked);
   };
 
   const deleteTodo = (todo) => deleteMultipleTodo([todo]);
 
+  const areAllChecked = () => checkedTodo.length === todoList.length;
+
+  const areSomeChecked = () =>
+    checkedTodo.length > 0 && checkedTodo.length < todoList.length;
+
+  const handleToggleAll = () => {
+    if (areAllChecked()) {
+      setCheckedTodo([]);
+    } else {
+      setCheckedTodo([]);
+      const checkAll = todoList.map((todoItem) => todoItem.id);
+      setCheckedTodo(checkAll);
+    }
+  };
+
   return (
-    <div className={classes.root}>
+    <Card>
+      <CardHeader
+        className={classes.CardHeader}
+        avatar={
+          <Checkbox
+            onClick={handleToggleAll}
+            inputProps={{ "aria-label": "all items selected" }}
+            disabled={todoList.length === 0}
+            checked={areAllChecked()}
+            indeterminate={areSomeChecked()}
+          />
+        }
+      />
+      <Divider />
       <List dense component="div" role="list">
         {todoList.map((item) => {
           const todoId = `todo-list-item-${item.task}-label`;
@@ -66,7 +99,7 @@ const TodoList = ({ loadTodoList, todoList, deleteMultipleTodo }) => {
             >
               <ListItemIcon>
                 <Checkbox
-                  checked={checked.indexOf(item.id) !== -1}
+                  checked={checkedTodo.indexOf(item.id) !== -1}
                   tabIndex={-1}
                   disableRipple
                   inputProps={{ "aria-labelledby": todoId }}
@@ -93,7 +126,7 @@ const TodoList = ({ loadTodoList, todoList, deleteMultipleTodo }) => {
           );
         })}
       </List>
-    </div>
+    </Card>
   );
 };
 
