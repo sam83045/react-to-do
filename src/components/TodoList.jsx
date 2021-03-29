@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { loadTodoList, deleteMultipleTodo } from "../redux/actions";
 import { todoListSelector } from "../redux/selectors/todoSelectors";
@@ -14,6 +14,8 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+import { TodoInput } from ".";
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -21,7 +23,8 @@ const useStyles = makeStyles(() => ({
 
 const TodoList = ({ loadTodoList, todoList, deleteMultipleTodo }) => {
   const classes = useStyles();
-  const [checked, setChecked] = React.useState([]);
+  const [checked, setChecked] = useState([]);
+  const [editTodoId, setEditTodoId] = useState("");
   useEffect(() => {
     loadTodoList();
   }, []);
@@ -47,7 +50,13 @@ const TodoList = ({ loadTodoList, todoList, deleteMultipleTodo }) => {
         {todoList.map((item) => {
           const todoId = `todo-list-item-${item.task}-label`;
 
-          return (
+          return item.id === editTodoId ? (
+            <TodoInput
+              initialValues={item}
+              key={item.id}
+              onUpdate={() => setEditTodoId("")}
+            />
+          ) : (
             <ListItem
               key={item.id}
               role="listitem"
@@ -64,6 +73,13 @@ const TodoList = ({ loadTodoList, todoList, deleteMultipleTodo }) => {
               </ListItemIcon>
               <ListItemText id={todoId} primary={item.task} />
               <ListItemSecondaryAction>
+                <IconButton
+                  edge="end"
+                  aria-label="delete"
+                  onClick={() => setEditTodoId(item.id)}
+                >
+                  <EditIcon />
+                </IconButton>
                 <IconButton
                   edge="end"
                   aria-label="delete"

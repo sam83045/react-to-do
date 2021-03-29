@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { useFormik } from "formik";
-import { addTodo } from "../redux/actions";
+import { addTodo, updateTodo } from "../redux/actions";
 import { v4 as uuid } from "uuid";
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
@@ -10,20 +10,27 @@ import ClearIcon from "@material-ui/icons/Clear";
 import TextField from "@material-ui/core/TextField";
 import SaveIcon from "@material-ui/icons/Save";
 import { Grid } from "@material-ui/core";
+import { isEmpty } from "lodash-es";
 
-const useStyles = makeStyles(() => ({
- 
-}));
+const useStyles = makeStyles(() => ({}));
 
-const TodoInput = ({ addTodo }) => {
+const TodoInput = ({
+  addTodo,
+  updateTodo,
+  onUpdate = () => {},
+  initialValues = { task: "" },
+}) => {
   const classes = useStyles();
   const formik = useFormik({
-    initialValues: {
-      todo: "",
-    },
+    initialValues,
     onSubmit: (values) => {
-      addTodo({ task: values.todo, id: uuid() });
-      formik.handleReset();
+      if (isEmpty(values.id)) {
+        addTodo({ task: values.task, id: uuid() });
+        formik.handleReset();
+      } else {
+        updateTodo(values);
+        onUpdate();
+      }
     },
   });
 
@@ -37,10 +44,11 @@ const TodoInput = ({ addTodo }) => {
       <Grid container>
         <Grid item xs={8}>
           <TextField
+            autoFocus
             type="text"
-            name="todo"
+            name="task"
             onChange={formik.handleChange}
-            value={formik.values.todo}
+            value={formik.values.task}
             placeholder="Enter a todo"
           />
         </Grid>
@@ -71,6 +79,9 @@ const TodoInput = ({ addTodo }) => {
 
 TodoInput.propTypes = {
   addTodo: PropTypes.func.isRequired,
+  updateTodo: PropTypes.func.isRequired,
+  initialValues: PropTypes.object,
+  onUpdate: PropTypes.func,
 };
 
-export default connect(null, { addTodo })(TodoInput);
+export default connect(null, { addTodo, updateTodo })(TodoInput);
