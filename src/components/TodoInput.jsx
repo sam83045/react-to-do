@@ -4,28 +4,41 @@ import PropTypes from "prop-types";
 import { useFormik } from "formik";
 import { addTodo, updateTodo } from "../redux/actions";
 import { v4 as uuid } from "uuid";
-import { makeStyles } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
+import {
+  Grid,
+  IconButton,
+  makeStyles,
+  Select,
+  TextField,
+  MenuItem,
+} from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
-import TextField from "@material-ui/core/TextField";
 import SaveIcon from "@material-ui/icons/Save";
-import { Grid } from "@material-ui/core";
 import { isEmpty } from "lodash-es";
 
-const useStyles = makeStyles(() => ({}));
+const useStyles = makeStyles((theme) => ({
+  root: {
+    margin: theme.spacing(1),
+  },
+}));
+const priorities = [
+  { id: "low", displayName: "Low" },
+  { id: "medium", displayName: "Medium" },
+  { id: "high", displayName: "High" },
+];
 
 const TodoInput = ({
   addTodo,
   updateTodo,
   onUpdate = () => {},
-  initialValues = { task: "" },
+  initialValues = { task: "", priority: "medium" },
 }) => {
   const classes = useStyles();
   const formik = useFormik({
     initialValues,
     onSubmit: (values) => {
       if (isEmpty(values.id)) {
-        addTodo({ task: values.task, id: uuid() });
+        addTodo({ ...values, id: uuid() });
         formik.handleReset();
       } else {
         updateTodo(values);
@@ -42,7 +55,7 @@ const TodoInput = ({
       autoComplete="off"
     >
       <Grid container>
-        <Grid item xs={8}>
+        <Grid item xs={6}>
           <TextField
             autoFocus
             type="text"
@@ -51,6 +64,27 @@ const TodoInput = ({
             value={formik.values.task}
             placeholder="Enter a todo"
           />
+        </Grid>
+        <Grid item xs={2}>
+          <Select
+            value={formik.values.priority}
+            name="priority"
+            onChange={formik.handleChange}
+            inputProps={{
+              name: "priority",
+              id: "priority-native-helper",
+            }}
+          >
+            {priorities.map((priority) => (
+              <MenuItem
+                value={priority.id}
+                key={priority.id}
+                aria-label={priority.displayName}
+              >
+                {priority.displayName}
+              </MenuItem>
+            ))}
+          </Select>
         </Grid>
         <Grid item xs={2}>
           <IconButton
