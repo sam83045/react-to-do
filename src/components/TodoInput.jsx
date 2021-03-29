@@ -58,6 +58,7 @@ const TodoInput = ({
             color="primary"
             onClick={formik.handleSubmit}
             type="submit"
+            disabled={formik.values.task.length === 0}
           >
             <SaveIcon />
           </IconButton>
