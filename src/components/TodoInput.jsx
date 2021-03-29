@@ -5,12 +5,13 @@ import { useFormik } from "formik";
 import { addTodo, updateTodo } from "../redux/actions";
 import { v4 as uuid } from "uuid";
 import {
-  Grid,
   IconButton,
   makeStyles,
   Select,
   TextField,
   MenuItem,
+  FormGroup,
+  FormControl,
 } from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
 import SaveIcon from "@material-ui/icons/Save";
@@ -18,7 +19,19 @@ import { isEmpty } from "lodash-es";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin: theme.spacing(1),
+    button: {
+      margin: theme.spacing(0),
+    },
+    margin: theme.spacing(1, 4, 0),
+    "& .MuiFormGroup-options": {
+      alignItems: "center",
+      "& .MuiSelect-select": {
+        width: 60,
+      },
+      "& .select": {
+        marginLeft: theme.spacing(1),
+      },
+    },
   },
 }));
 const priorities = [
@@ -31,6 +44,7 @@ const TodoInput = ({
   addTodo,
   updateTodo,
   onUpdate = () => {},
+  onReset = () => {},
   initialValues = { task: "", priority: "medium" },
 }) => {
   const classes = useStyles();
@@ -54,8 +68,8 @@ const TodoInput = ({
       noValidate
       autoComplete="off"
     >
-      <Grid container>
-        <Grid item xs={6}>
+      <FormGroup className="MuiFormGroup-options" row>
+        <FormControl>
           <TextField
             autoFocus
             type="text"
@@ -64,9 +78,10 @@ const TodoInput = ({
             value={formik.values.task}
             placeholder="Enter a todo"
           />
-        </Grid>
-        <Grid item xs={2}>
+        </FormControl>
+        <FormControl>
           <Select
+            className="select"
             value={formik.values.priority}
             name="priority"
             onChange={formik.handleChange}
@@ -85,29 +100,34 @@ const TodoInput = ({
               </MenuItem>
             ))}
           </Select>
-        </Grid>
-        <Grid item xs={2}>
+        </FormControl>
+        <FormControl>
           <IconButton
             aria-label="Save"
             color="primary"
             onClick={formik.handleSubmit}
             type="submit"
             disabled={formik.values.task.length === 0}
+            edge="end"
           >
             <SaveIcon />
           </IconButton>
-        </Grid>
-        <Grid item xs={2}>
+        </FormControl>
+        <FormControl>
           <IconButton
             aria-label="Cancel"
             color="secondary"
-            onClick={formik.handleReset}
+            onClick={() => {
+              formik.handleReset();
+              onReset();
+            }}
             type="reset"
+            edge="end"
           >
             <ClearIcon />
           </IconButton>
-        </Grid>
-      </Grid>
+        </FormControl>
+      </FormGroup>
     </form>
   );
 };
@@ -117,6 +137,7 @@ TodoInput.propTypes = {
   updateTodo: PropTypes.func.isRequired,
   initialValues: PropTypes.object,
   onUpdate: PropTypes.func,
+  onReset: PropTypes.func,
 };
 
 export default connect(null, { addTodo, updateTodo })(TodoInput);

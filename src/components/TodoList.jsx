@@ -55,6 +55,7 @@ const TodoList = ({ loadTodoList, todoList, deleteMultipleTodo }) => {
               initialValues={item}
               key={item.id}
               onUpdate={() => setEditTodoId("")}
+              onReset={() => setEditTodoId("")}
             />
           ) : (
             <ListItem
