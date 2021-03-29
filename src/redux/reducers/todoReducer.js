@@ -12,7 +12,7 @@ const todoReducer = (state = initialState, actions) => {
         case CONSTANTS.ADD_TODO: {
             return [actions.payload, ...state];
         }
-        case CONSTANTS.REMOVE_MULTIPLE_TODO: {
+        case CONSTANTS.DELETE_MULTIPLE_TODO: {
             return state.filter(stateToDo =>
                 !actions.payload.some((removeTodo) => stateToDo.id === removeTodo.id)
             );

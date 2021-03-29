@@ -24,10 +24,10 @@ export const addTodo = (item) => {
     }
 };
 
-export const removeMultipleTodo = (items) => {
+export const deleteMultipleTodo = (items) => {
     return async dispatch => {
         return dispatch({
-            type: CONSTANTS.REMOVE_MULTIPLE_TODO,
+            type: CONSTANTS.DELETE_MULTIPLE_TODO,
             payload: items
         })
     }

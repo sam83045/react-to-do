@@ -1,28 +1,25 @@
 import React from "react";
-import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { TodoInput, TodoList } from "../components";
+import { Paper } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
   root: {
     margin: "auto",
+    width: 300,
+    paper: {
+      overflow: "auto",
+    },
   },
 }));
 
 function TodoPage() {
   const classes = useStyles();
   return (
-    <div className={classes.root}>
-      <Grid
-        container
-        justify="center"
-        alignItems="center"
-        className={classes.root}
-      >
-        <TodoInput />
-        <TodoList />
-      </Grid>
-    </div>
+    <Paper className={classes.root}>
+      <TodoInput />
+      <TodoList />
+    </Paper>
   );
 }
 
