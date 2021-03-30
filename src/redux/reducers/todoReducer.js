@@ -13,9 +13,14 @@ const todoReducer = (state = initialState, actions) => {
             return [actions.payload, ...state];
         }
         case CONSTANTS.DELETE_MULTIPLE_TODO: {
-            return state.filter(stateToDo =>
-                !actions.payload.some((removeTodo) => stateToDo.id === removeTodo.id)
-            );
+            return state.reduce((newTodo, currentTodo) => {
+                if (actions.payload.find(itemToRemove => itemToRemove === currentTodo.id)) {
+                    return newTodo;
+                } else {
+                    return [...newTodo, currentTodo];
+                }
+
+            }, []);
         }
         case CONSTANTS.UPDATE_TODO: {
             const indexOfTodo = state.findIndex(todo => todo.id === actions.payload.id);

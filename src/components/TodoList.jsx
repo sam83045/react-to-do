@@ -77,6 +77,15 @@ const TodoList = ({ loadTodoList, todoList, deleteMultipleTodo }) => {
             indeterminate={areSomeChecked()}
           />
         }
+        action={
+          <IconButton
+            aria-label="delete"
+            onClick={() => deleteMultipleTodo(checkedTodo)}
+          >
+            <DeleteIcon />
+          </IconButton>
+        }
+        title={`${checkedTodo.length}/${todoList.length} selected`}
       />
       <Divider />
       <List dense component="div" role="list">
@@ -117,7 +126,7 @@ const TodoList = ({ loadTodoList, todoList, deleteMultipleTodo }) => {
                 <IconButton
                   edge="end"
                   aria-label="delete"
-                  onClick={() => deleteTodo(item)}
+                  onClick={() => deleteTodo(item.id)}
                 >
                   <DeleteIcon />
                 </IconButton>
