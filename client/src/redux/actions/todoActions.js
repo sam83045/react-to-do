@@ -1,16 +1,14 @@
 import { CONSTANTS } from "./index";
-
-const todoListData = [
-    { id: "1", task: "Todo1",priority:"low" },
-    { id: "2", task: "Todo2",priority:"medium" },
-    { id: "3", task: "Todo3",priority:"high" }
-];
+import axios from "../../axios/axios-instance";
 
 export const loadTodoList = () => {
     return async dispatch => {
+        const todoList = await axios
+            .get("/todo")
+            .then(res => res.data);
         return dispatch({
             type: CONSTANTS.LOAD_TODO_LIST,
-            payload: todoListData
+            payload: todoList
         });
     };
 };
