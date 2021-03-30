@@ -19,6 +19,7 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import { TodoInput } from ".";
+import { isEmpty } from "lodash-es";
 
 const useStyles = makeStyles((theme) => ({
   cardHeader: {
@@ -33,6 +34,13 @@ const TodoList = ({ loadTodoList, todoList, deleteMultipleTodo }) => {
   useEffect(() => {
     loadTodoList();
   }, []);
+
+  useEffect(() => {
+    const freshTodoList = checkedTodo.filter((checkedId) => {
+      !isEmpty(todoList.find((todoItem) => todoItem.id === checkedId));
+    });
+    setCheckedTodo(freshTodoList);
+  }, [todoList]);
 
   const handleToggle = (value) => () => {
     const currentIndex = checkedTodo.indexOf(value);
@@ -49,7 +57,8 @@ const TodoList = ({ loadTodoList, todoList, deleteMultipleTodo }) => {
 
   const deleteTodo = (todo) => deleteMultipleTodo([todo]);
 
-  const areAllChecked = () => checkedTodo.length === todoList.length;
+  const areAllChecked = () =>
+    checkedTodo.length === todoList.length && todoList.length !== 0;
 
   const areSomeChecked = () =>
     checkedTodo.length > 0 && checkedTodo.length < todoList.length;
