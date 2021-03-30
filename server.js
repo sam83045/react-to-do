@@ -28,62 +28,39 @@ app.get(`/todo`, (req, res) => {
 });
 
 /**
- * PUT /todo/update/
- */
-app.put("/todo/update", (req, res) => {
-  const { data, listName } = req.body;
-  const todoListData = getDbData();
-  const cardArr = todoListData[listName].cards;
-
-  todoListData[listName].cards = cardArr.map(card => {
-    if (card.id === data.id) {
-      return data;
-    }
-    return card;
-  });
-  const todDdata = JSON.stringify(todoListData);
-  fs.writeFileSync("./todo.json", todDdata);
-  return res.status(201).json({
-    message: "Resource created"
-  });
-});
-
-/**
  * POST /todo/create/
  */
 app.post("/todo/create", (req, res) => {
-  const { listName, data } = req.body;
+  const { data } = req.body;
   const id = uuid();
 
-  const todo = {
-    id,
-    ...data
-  };
-  const todoListData = getDbData();
+  const todoList = [data, ...getDbData()];
 
-  todoListData[listName].cards.push(todo);
-
-  const dbData = JSON.stringify(todoListData);
+  const dbData = JSON.stringify(todoList);
   fs.writeFileSync("./todo.json", dbData);
 
   return res.status(201).json({
-    data: { ...todo },
+    data: { todoList },
     message: "Resource created"
   });
 });
 
 /**
- * DELETE /todo/delete/:id
+ * POST /todo/delete
  */
-app.delete("/todo/delete/:listName/:cardId", (req, res) => {
-  const { listName, cardId } = req.params;
-  const todoListData = getDbData();
+app.post("/todo/delete", (req, res) => {
+  const { data } = req.body;
+  const todoList = getDbData();
 
-  todoListData[listName].cards = todoListData[listName].cards.filter(
-    card => card.id !== cardId
-  );
+  const listAfterDeleion = todoList.reduce((newTodo, currentTodo) => {
+    if (data.find(itemToRemove => itemToRemove === currentTodo.id)) {
+      return newTodo;
+    } else {
+      return [...newTodo, currentTodo];
+    }
+  }, []);
 
-  const dbData = JSON.stringify(todoListData);
+  const dbData = JSON.stringify(listAfterDeleion);
 
   fs.writeFileSync("./todo.json", dbData);
   return res.status(200).json({
@@ -92,16 +69,21 @@ app.delete("/todo/delete/:listName/:cardId", (req, res) => {
 });
 
 /**
- * POST todo/updateLists
+ * POST todo/update
  */
-app.post("/todo/updateLists", (req, res) => {
-  const { lists } = req.body;
-  const data = JSON.stringify(lists);
+app.post("/todo/update", (req, res) => {
+  const { data } = req.body;
 
-  fs.writeFileSync("./todo.json", data);
+  const todoList = getDbData();
+
+  const indexOfTodo = todoList.findIndex(todo => todo.id === data.id);
+  const updatedList = [...todoList.slice(0, indexOfTodo), data, ...todoList.slice(indexOfTodo + 1)];
+
+  const dbData = JSON.stringify(updatedList);
+  fs.writeFileSync("./todo.json", dbData);
 
   return res.status(201).json({
-    message: "Resource created"
+    message: "Resource Updated"
   });
 });
 

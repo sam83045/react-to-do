@@ -1,12 +1,1 @@
-[
-  { "id": "1", "task": "Identifi the task", "priority": "low" },
-  { "id": "2", "task": "Write down steps", "priority": "medium" },
-  { "id": "3", "task": "Select Technology", "priority": "high" },
-  { "id": "4", "task": "Draw a flow chart", "priority": "high" },
-  { "id": "5", "task": "Work on code", "priority": "high" },
-  {
-    "id": "6",
-    "task": "Don't forget to push code to github",
-    "priority": "high"
-  }
-]
+[{"id":"1","task":"Identifi the tasks","priority":"low"},{"id":"2","task":"Write down steps","priority":"medium"},{"id":"3","task":"Select Technology","priority":"high"},{"id":"4","task":"Draw a flow chart","priority":"high"},{"id":"5","task":"Work on code","priority":"high"},{"id":"6","task":"Don't forget to push code to github","priority":"high"}]

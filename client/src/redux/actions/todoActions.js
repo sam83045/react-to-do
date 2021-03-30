@@ -13,29 +13,35 @@ export const loadTodoList = () => {
     };
 };
 
-export const addTodo = (item) => {
+export const addTodo = (data) => {
     return async dispatch => {
+        await axios
+            .post("/todo/create", {
+                data
+            });
         return dispatch({
             type: CONSTANTS.ADD_TODO,
-            payload: item
+            payload: data
         })
     }
 };
 
-export const deleteMultipleTodo = (items) => {
+export const deleteMultipleTodo = (data) => {
     return async dispatch => {
+        await axios.post(`/todo/delete`, { data });
         return dispatch({
             type: CONSTANTS.DELETE_MULTIPLE_TODO,
-            payload: items
+            payload: data
         })
     }
 };
 
-export const updateTodo = item => {
+export const updateTodo = data => {
     return async dispatch => {
+        await axios.post(`/todo/update`, { data });
         return dispatch({
             type: CONSTANTS.UPDATE_TODO,
-            payload: item
+            payload: data
         })
     }
 };
