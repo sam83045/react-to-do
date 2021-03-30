@@ -1,9 +1,9 @@
 import { CONSTANTS } from "./index";
 
 const todoListData = [
-    { id: "1", task: "Todo1" },
-    { id: "2", task: "Todo2" },
-    { id: "3", task: "Todo3" }
+    { id: "1", task: "Todo1",priority:"low" },
+    { id: "2", task: "Todo2",priority:"medium" },
+    { id: "3", task: "Todo3",priority:"high" }
 ];
 
 export const loadTodoList = () => {

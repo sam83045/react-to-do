@@ -10,11 +10,12 @@ import {
   Divider,
   IconButton,
   List,
-  ListItem,
+  ListItem as MuiListItem,
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
   makeStyles,
+  withStyles,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
@@ -24,8 +25,29 @@ import { isEmpty } from "lodash-es";
 const useStyles = makeStyles((theme) => ({
   cardHeader: {
     padding: theme.spacing(1, 2),
+    MuiListItem: {
+      root: {
+        backgroundColor: "red",
+      },
+    },
   },
 }));
+
+const ListItem = withStyles((theme) => ({
+  root: {
+    fontSize: "16px",
+    "&.low": {
+      color: theme.palette.success.dark,
+    },
+    "&.medium": {
+      color: theme.palette.warning.dark,
+    },
+    "&.high": {
+      color: theme.palette.error.dark,
+    },
+  },
+  selected: {},
+}))(MuiListItem);
 
 const TodoList = ({ loadTodoList, todoList, deleteMultipleTodo }) => {
   const classes = useStyles();
@@ -111,6 +133,7 @@ const TodoList = ({ loadTodoList, todoList, deleteMultipleTodo }) => {
             />
           ) : (
             <ListItem
+              className={item.priority}
               key={item.id}
               role="listitem"
               button
