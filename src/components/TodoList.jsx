@@ -36,9 +36,10 @@ const TodoList = ({ loadTodoList, todoList, deleteMultipleTodo }) => {
   }, []);
 
   useEffect(() => {
-    const freshTodoList = checkedTodo.filter((checkedId) => {
-      !isEmpty(todoList.find((todoItem) => todoItem.id === checkedId));
-    });
+    const freshTodoList = checkedTodo.filter(
+      (checkedId) =>
+        !isEmpty(todoList.find((todoItem) => todoItem.id === checkedId))
+    );
     setCheckedTodo(freshTodoList);
   }, [todoList]);
 
@@ -133,7 +134,7 @@ const TodoList = ({ loadTodoList, todoList, deleteMultipleTodo }) => {
                   <EditIcon color="primary" />
                 </IconButton>
                 <IconButton
-                  edge="end"                  
+                  edge="end"
                   aria-label="delete todo"
                   onClick={() => deleteTodo(item.id)}
                 >
