@@ -88,10 +88,10 @@ const TodoList = ({ loadTodoList, todoList, deleteMultipleTodo }) => {
         }
         action={
           <IconButton
-            aria-label="delete"
+            aria-label="delete all"
             onClick={() => deleteMultipleTodo(checkedTodo)}
           >
-            <DeleteIcon />
+            <DeleteIcon color="error" />
           </IconButton>
         }
         title={`${checkedTodo.length}/${todoList.length} selected`}
@@ -127,17 +127,17 @@ const TodoList = ({ loadTodoList, todoList, deleteMultipleTodo }) => {
               <ListItemSecondaryAction>
                 <IconButton
                   edge="end"
-                  aria-label="delete"
+                  aria-label="edit todo"
                   onClick={() => setEditTodoId(item.id)}
                 >
-                  <EditIcon />
+                  <EditIcon color="primary" />
                 </IconButton>
                 <IconButton
-                  edge="end"
-                  aria-label="delete"
+                  edge="end"                  
+                  aria-label="delete todo"
                   onClick={() => deleteTodo(item.id)}
                 >
-                  <DeleteIcon />
+                  <DeleteIcon color="error" />
                 </IconButton>
               </ListItemSecondaryAction>
             </ListItem>
