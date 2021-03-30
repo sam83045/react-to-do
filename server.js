@@ -89,7 +89,7 @@ app.post("/todo/update", (req, res) => {
 
 // Production mode settngs for Heroku
 if (process.env.NODE_ENV === "production") {
-  baseUrl = "todo-list.com";
+  baseUrl = "https://shoaib-to-do-app.herokuapp.com/";
   app.use(express.static("client/build"));
 }
 const PORT = process.env.PORT || 9001;
